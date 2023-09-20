@@ -21,6 +21,16 @@ echo (char *message)
 int
 export (char *kvpair)
 {
+  if (*kvpair == NULL) {
+    return 1
+  }
+  char kvcopy = *kvpair;
+  char key = strtok(kvcopy, "=");
+  char value = strtok(kvcopy, NULL);
+  if (value == NULL) {
+    return 1
+  }
+  hash_insert (key, value);
   return 0;
 }
 
