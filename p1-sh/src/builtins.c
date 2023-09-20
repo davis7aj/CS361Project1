@@ -1,3 +1,10 @@
+#include <stdio.h>
+#include <string.h>
+
+#include "builtins.h"
+#include "hash.h"
+#include "process.h"
+
 // Given a message as input, print it to the screen followed by a
 // newline ('\n'). If the message contains the two-byte escape sequence
 // "\\n", print a newline '\n' instead. No other escape sequence is
