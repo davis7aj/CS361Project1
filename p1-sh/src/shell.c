@@ -37,8 +37,10 @@ void shell(FILE *input)
 
     if (strncmp(buffer, "cd", 2) == 0)
     {
-      chdir(getenv("HOME"));//puts in top most dir
-      if (chdir(&buffer[3]) != 0)
+            char *new_directory = &buffer[3];
+            new_directory[strlen(new_directory) -1 ] = '\0';
+
+      if (chdir(new_directory) != 0)
       {
         perror("chdir() error()");
       }
