@@ -17,6 +17,16 @@
 int
 echo (char *message)
 {
+  if(message != NULL){
+    message[strlen(message) -1] = '\0';
+  } 
+  char *token = strtok(message, "\\n");
+  do
+  {
+    printf("%s\n", token);
+    token = strtok(NULL, "\\n");
+  } while (token != NULL);
+
   return 0;
 }
 
@@ -47,6 +57,16 @@ export (char *kvpair)
 int
 pwd (void)
 {
+
+  char cwd[256];
+
+    if (getcwd(cwd, sizeof(cwd)) == NULL)
+      perror("getcwd() error");
+    else
+      printf("%s\n", cwd);
+  
+
+
   return 0;
 }
 
