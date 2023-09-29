@@ -14,12 +14,12 @@
 //
 // Returns 0 for success, 1 for errors (invalid escape sequence or no
 // curly braces around environment variables).
-int
-echo (char *message)
+int echo(char *message)
 {
-  if(message != NULL){
-    message[strlen(message) -1] = '\0';
-  } 
+  if (message != NULL)
+  {
+    message[strlen(message) - 1] = '\0';
+  }
   char *token = strtok(message, "\\n");
   do
   {
@@ -35,8 +35,7 @@ echo (char *message)
 //
 // Returns 0 on success, 1 for an invalid pair string (kvpair is NULL or
 // there is no '=' in the string).
-int
-export (char *kvpair)
+int export(char *kvpair)
 {
   if (*kvpair == NULL)
   {
@@ -49,31 +48,27 @@ export (char *kvpair)
   {
     return 1;
   }
-  hash_insert (key, value);
+  hash_insert(key, value);
   return 0;
 }
 
 // Prints the current working directory (see getcwd()). Returns 0.
-int
-pwd (void)
+int pwd(void)
 {
 
   char cwd[256];
 
-    if (getcwd(cwd, sizeof(cwd)) == NULL)
-      perror("getcwd() error");
-    else
-      printf("%s\n", cwd);
-  
-
+  if (getcwd(cwd, sizeof(cwd)) == NULL)
+    perror("getcwd() error");
+  else
+    printf("%s\n", cwd);
 
   return 0;
 }
 
 // Removes a key-value pair from the global hash table.
 // Returns 0 on success, 1 if the key does not exist.
-int
-unset (char *key)
+int unset(char *key)
 {
   return 0;
 }
@@ -84,8 +79,33 @@ unset (char *key)
 //
 // Returns 0 if at least one location is found, 1 if no commands were
 // passed or no locations found.
-int
-which (char *cmdline)
+int which(char *cmdline)
 {
-  return 0;
+
+  char *included = {"which", "cd", "unset", "pwd", "export", "export"};
+
+  int isElementPresent = 1;
+  //only want to test part that doesnt say which 
+  char *cmd = cmdline[6];
+
+  for (int i = 0; i < 6; i++)
+  {
+    if (included[i] == cmd)
+    {
+      isElementPresent = 0;
+      break;
+    }
+  }
+
+  if (isElementPresent == 0)
+  {
+    printf("%s: dukesh built-in command", cmd);
+  } else {
+
+printf(cmd);
+
+
+  }
+
+  return isElementPresent;
 }
