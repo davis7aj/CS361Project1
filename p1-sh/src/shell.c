@@ -50,6 +50,25 @@ void shell(FILE *input)
     {
       pwd();
     }
+
+if (strncmp(buffer, "which", 5) == 0)
+    {
+
+char *cmd = &buffer;
+cmd[strlen(buffer) -1] = '\0';
+
+if (strncmp(&cmd[6], "which ", strlen(cmd)) == 0)
+{
+  /* get rid of extra space on which cmd */
+  cmd[strlen(cmd) -1] = '\0';
+}
+
+      
+      which(&cmd[6]);
+      // printf("\ntesting 0000");
+    }
+
+
   }
   printf("\n");
   hash_destroy();

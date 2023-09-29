@@ -82,15 +82,13 @@ int unset(char *key)
 int which(char *cmdline)
 {
 
-  char *included = {"which", "cd", "unset", "pwd", "export", "export"};
+  char included[7][10] = {"cd", "pwd", "echo", "which", "unset",  "export", "export"};
 
   int isElementPresent = 1;
-  //only want to test part that doesnt say which 
-  char *cmd = cmdline[6];
 
   for (int i = 0; i < 6; i++)
   {
-    if (included[i] == cmd)
+    if (strncmp(included[i], cmdline, strlen(included[i]))  == 0)
     {
       isElementPresent = 0;
       break;
@@ -99,10 +97,19 @@ int which(char *cmdline)
 
   if (isElementPresent == 0)
   {
-    printf("%s: dukesh built-in command", cmd);
+    printf("%s: dukesh built-in command\n", cmdline);
   } else {
 
-printf(cmd);
+
+if (strncmp(cmdline, "./", 2) == 0)
+{
+  //if given executable, print the executable
+  printf("%s\n",  cmdline);
+
+} else{
+  //otherwise print the path to the executable
+  printf("/bin/%s\n", cmdline);
+}
 
 
   }
