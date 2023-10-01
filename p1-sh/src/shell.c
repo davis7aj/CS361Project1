@@ -54,7 +54,10 @@ void shell(FILE *input)
 if (strncmp(buffer, "which", 5) == 0)
     {
 
-char *cmd = &buffer;
+      char cmd[strlen(buffer)];
+  strncpy(cmd, buffer, strlen(buffer));
+
+// char *cmd = &buffer;
 cmd[strlen(buffer) -1] = '\0';
 
 if (strncmp(&cmd[6], "which ", strlen(cmd)) == 0)
@@ -67,6 +70,18 @@ if (strncmp(&cmd[6], "which ", strlen(cmd)) == 0)
       which(&cmd[6]);
       // printf("\ntesting 0000");
     }
+
+if (strncmp(buffer, "export", 6) == 0)
+  {
+    export(&buffer[7]);
+  }
+
+  if (strncmp(buffer, "unset", 5) == 0)
+  {
+    unset(&buffer[6]);
+  }
+  
+  
 
 
   }

@@ -4,6 +4,7 @@
 #include "builtins.h"
 #include "hash.h"
 #include "process.h"
+#include <unistd.h>
 
 // Given a message as input, print it to the screen followed by a
 // newline ('\n'). If the message contains the two-byte escape sequence
@@ -20,6 +21,39 @@ int echo(char *message)
   {
     message[strlen(message) - 1] = '\0';
   }
+
+  char msg[strlen(message)];
+  strncpy(msg, message, strlen(message));
+
+
+  char *temp = strchr(msg, '{');
+
+  if (temp != NULL)
+  {
+    char *tempTok = strtok(temp, "}");
+
+  // printf("%s\n", tempTok+1);
+    char *key = hash_find(tempTok+1);
+
+    char *ret = strtok(message, "$");
+
+if (key == NULL)
+{
+  printf("%s%s\n", ret, "");
+    return 0;
+}
+
+
+    printf("%s%s", ret, key);
+    return 0;
+  }
+  
+
+  
+
+
+
+  
   char *token = strtok(message, "\\n");
   do
   {
@@ -37,19 +71,25 @@ int echo(char *message)
 // there is no '=' in the string).
 int export(char *kvpair)
 {
-  if (*kvpair == NULL)
+  if (kvpair == NULL)
   {
     return 1;
   }
-  char kvcopy = *kvpair;
-  char key = strtok(kvcopy, "=");
-  char value = strtok(kvcopy, NULL);
+  char *kvcopy = kvpair;
+  char *key = strtok(kvcopy, "=");
+  char *value = strtok(NULL, "");
   if (value == NULL)
   {
     return 1;
   }
-  hash_insert(key, value);
-  return 0;
+ bool temp = hash_insert(key, value);
+
+  if (temp)
+  {
+    return 0;
+  }
+  
+  return 1;
 }
 
 // Prints the current working directory (see getcwd()). Returns 0.
@@ -70,7 +110,15 @@ int pwd(void)
 // Returns 0 on success, 1 if the key does not exist.
 int unset(char *key)
 {
-  return 0;
+
+bool temp = hash_remove(key);
+
+if (temp)
+  {
+    return 0;
+  }
+  
+  return 1;
 }
 
 // Given a string of commands, find their location(s) in the $PATH global
