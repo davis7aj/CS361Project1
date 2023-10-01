@@ -17,23 +17,23 @@
 //
 // Returns 0 for success, 1 for errors (invalid escape sequence or no
 // curly braces around environment variables).
-int echo(char *message)
+int
+echo (char *message)
 {
   if (message != NULL)
-  {
-    message[strlen(message) - 1] = '\0';
-  }
+    {
+      message[strlen (message) - 1] = '\0';
+    }
 
-  char msg[strlen(message)];
-  strncpy(msg, message, strlen(message));
+  char msg[strlen (message)];
+  strncpy (msg, message, strlen (message));
 
-  char envmsg[strlen(message)];
-  strncpy(envmsg, message, strlen(message));
+  char envmsg[strlen (message)];
+  strncpy (envmsg, message, strlen (message));
 
-  char *env = getenv("$?");
+  char *env = getenv ("$?");
 
-
-  char *envchk = strchr(envmsg, '?');
+  char *envchk = strchr (envmsg, '?');
 
   // if (envchk != NULL)
   // {
@@ -41,43 +41,35 @@ int echo(char *message)
   //     return 0;
 
   // }
-  
 
-
-  char *temp = strchr(msg, '{');
+  char *temp = strchr (msg, '{');
 
   if (temp != NULL)
-  {
-    char *tempTok = strtok(temp, "}");
+    {
+      char *tempTok = strtok (temp, "}");
 
-  // printf("%s\n", tempTok+1);
-    char *key = hash_find(tempTok+1);
+      // printf("%s\n", tempTok+1);
+      char *key = hash_find (tempTok + 1);
 
-    char *ret = strtok(message, "$");
+      char *ret = strtok (message, "$");
 
-if (key == NULL)
-{
-  printf("%s%s\n", ret, "");
-    return 0;
-}
+      if (key == NULL)
+        {
+          printf ("%s%s\n", ret, "");
+          return 0;
+        }
 
+      printf ("%s%s", ret, key);
+      return 0;
+    }
 
-    printf("%s%s", ret, key);
-    return 0;
-  }
-  
-
-  
-
-
-
-  
-  char *token = strtok(message, "\\n");
+  char *token = strtok (message, "\\n");
   do
-  {
-    printf("%s\n", token);
-    token = strtok(NULL, "\\n");
-  } while (token != NULL);
+    {
+      printf ("%s\n", token);
+      token = strtok (NULL, "\\n");
+    }
+  while (token != NULL);
 
   return 0;
 }
@@ -90,52 +82,54 @@ if (key == NULL)
 int export(char *kvpair)
 {
   if (kvpair == NULL)
-  {
-    return 1;
-  }
+    {
+      return 1;
+    }
   char *kvcopy = kvpair;
-  char *key = strtok(kvcopy, "=");
-  char *value = strtok(NULL, "");
+  char *key = strtok (kvcopy, "=");
+  char *value = strtok (NULL, "");
   if (value == NULL)
-  {
-    return 1;
-  }
- bool temp = hash_insert(key, value);
+    {
+      return 1;
+    }
+  bool temp = hash_insert (key, value);
 
   if (temp)
-  {
-    return 0;
-  }
-  
+    {
+      return 0;
+    }
+
   return 1;
 }
 
 // Prints the current working directory (see getcwd()). Returns 0.
-int pwd(void)
+int
+pwd (void)
 {
 
   char cwd[256];
 
-  if (getcwd(cwd, sizeof(cwd)) == NULL)
-    perror("getcwd() error");
+  if (getcwd (cwd, sizeof (cwd)) == NULL)
+    perror ("getcwd() error");
   else
-    printf("%s\n", cwd);
+    printf ("%s\n", cwd);
 
   return 0;
 }
 
 // Removes a key-value pair from the global hash table.
 // Returns 0 on success, 1 if the key does not exist.
-int unset(char *key)
+int
+unset (char *key)
 {
 
-bool temp = hash_remove(key);
+  bool temp = hash_remove (key);
 
-if (temp)
-  {
-    return 0;
-  }
-  
+  if (temp)
+    {
+      return 0;
+    }
+
   return 1;
 }
 
@@ -145,45 +139,45 @@ if (temp)
 //
 // Returns 0 if at least one location is found, 1 if no commands were
 // passed or no locations found.
-int which(char *cmdline)
+int
+which (char *cmdline)
 {
 
-  char included[7][10] = {"cd", "pwd", "echo", "which", "unset",  "export", "export"};
+  char included[7][10]
+      = { "cd", "pwd", "echo", "which", "unset", "export", "export" };
 
   int isElementPresent = 1;
 
   for (int i = 0; i < 6; i++)
-  {
-    if (strncmp(included[i], cmdline, strlen(included[i]))  == 0)
     {
-      isElementPresent = 0;
-      break;
+      if (strncmp (included[i], cmdline, strlen (included[i])) == 0)
+        {
+          isElementPresent = 0;
+          break;
+        }
     }
-  }
 
   if (isElementPresent == 0)
-  {
-    printf("%s: dukesh built-in command\n", cmdline);
-  } else {
+    {
+      printf ("%s: dukesh built-in command\n", cmdline);
+    }
+  else
+    {
 
+      if (strncmp (cmdline, "./", 2) == 0)
+        {
+          // if given executable, print the executable
+          printf ("%s\n", cmdline);
+        }
+      else
+        {
+          // otherwise print the path to the executable
+          //  printf("/bin/%s\n", cmdline);
 
-if (strncmp(cmdline, "./", 2) == 0)
-{
-  //if given executable, print the executable
-  printf("%s\n",  cmdline);
-
-} else{
-  //otherwise print the path to the executable
-  // printf("/bin/%s\n", cmdline);
-
-  char buf[100]; 
-  printf("%s/%s\n", getcwd(buf, sizeof(buf)), cmdline);
-
-
-}
-
-
-  }
+          char buf[100];
+          printf ("%s/%s\n", getcwd (buf, sizeof (buf)), cmdline);
+        }
+    }
 
   return isElementPresent;
 }
