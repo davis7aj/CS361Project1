@@ -6,6 +6,8 @@
 #include "process.h"
 #include <unistd.h>
 
+#include <stdlib.h>
+
 // Given a message as input, print it to the screen followed by a
 // newline ('\n'). If the message contains the two-byte escape sequence
 // "\\n", print a newline '\n' instead. No other escape sequence is
@@ -24,6 +26,22 @@ int echo(char *message)
 
   char msg[strlen(message)];
   strncpy(msg, message, strlen(message));
+
+  char envmsg[strlen(message)];
+  strncpy(envmsg, message, strlen(message));
+
+  char *env = getenv("$?");
+
+
+  char *envchk = strchr(envmsg, '?');
+
+  // if (envchk != NULL)
+  // {
+  //     printf("%s\n", env);
+  //     return 0;
+
+  // }
+  
 
 
   char *temp = strchr(msg, '{');
@@ -156,7 +174,12 @@ if (strncmp(cmdline, "./", 2) == 0)
 
 } else{
   //otherwise print the path to the executable
-  printf("/bin/%s\n", cmdline);
+  // printf("/bin/%s\n", cmdline);
+
+  char buf[100]; 
+  printf("%s/%s\n", getcwd(buf, sizeof(buf)), cmdline);
+
+
 }
 
 

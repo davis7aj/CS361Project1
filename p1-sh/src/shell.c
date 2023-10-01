@@ -14,6 +14,9 @@ void shell(FILE *input)
   hash_init(100);
   hash_insert("?", "0");
   char buffer[MAXLENGTH];
+
+int temp = 0;
+
   while (1)
   {
     // Print the cursor and get the next command entered
@@ -32,7 +35,7 @@ void shell(FILE *input)
 
     if (strncmp(buffer, "echo", 4) == 0)
     {
-      echo(&buffer[5]);
+      temp = echo(&buffer[5]);
     }
 
     if (strncmp(buffer, "cd", 2) == 0)
@@ -48,7 +51,7 @@ void shell(FILE *input)
 
     if (strncmp(buffer, "pwd", 3) == 0)
     {
-      pwd();
+      temp = pwd();
     }
 
 if (strncmp(buffer, "which", 5) == 0)
@@ -67,18 +70,18 @@ if (strncmp(&cmd[6], "which ", strlen(cmd)) == 0)
 }
 
       
-      which(&cmd[6]);
+      temp = which(&cmd[6]);
       // printf("\ntesting 0000");
     }
 
 if (strncmp(buffer, "export", 6) == 0)
   {
-    export(&buffer[7]);
+    temp = export(&buffer[7]);
   }
 
   if (strncmp(buffer, "unset", 5) == 0)
   {
-    unset(&buffer[6]);
+    temp = unset(&buffer[6]);
   }
   
   
