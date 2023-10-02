@@ -11,6 +11,10 @@ main (int argc, char *argv[])
   DIR *d;
   struct dirent *dir;
   d = opendir(argv[argc - 1]);
+  if (d == NULL)
+  {
+    return 1;
+  }
   int a = 0;
   int s = 0;
   for (int i = 0; i < argc; i++)

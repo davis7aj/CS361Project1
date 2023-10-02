@@ -153,10 +153,6 @@ shell (FILE *input)
                   memset (buf, 0, sizeof (buf));
                 }
             }
-          else
-            {
-              printf ("oopsie errno=%d\n", errno);
-            }
 
           close (fd[0]);
           int exit_code;
