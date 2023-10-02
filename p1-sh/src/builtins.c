@@ -8,6 +8,9 @@
 
 #include <stdlib.h>
 
+
+extern int temp;
+
 // Given a message as input, print it to the screen followed by a
 // newline ('\n'). If the message contains the two-byte escape sequence
 // "\\n", print a newline '\n' instead. No other escape sequence is
@@ -31,16 +34,18 @@ echo (char *message)
   char envmsg[strlen (message)];
   strncpy (envmsg, message, strlen (message));
 
+   char *envchk = strchr (envmsg, '?');
+ 
   char *env = getenv ("$?");
 
-  char *envchk = strchr (envmsg, '?');
+// printf("%s\n", envchk);
 
-  // if (envchk != NULL)
-  // {
-  //     printf("%s\n", env);
-  //     return 0;
+  if (envchk != NULL)
+  {
+      printf("%d\n", temp);
+      return 0;
 
-  // }
+  }
 
   char *temp = strchr (msg, '{');
 

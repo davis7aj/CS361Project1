@@ -10,6 +10,10 @@
 #include "hash.h"
 #include "process.h"
 
+//default is 1/ fail for testing purposes
+  int temp = 1;
+
+
 // No command line can be more than 100 characters
 #define MAXLENGTH 100
 
@@ -19,9 +23,6 @@ shell (FILE *input)
   hash_init (100);
   hash_insert ("?", "0");
   char buffer[MAXLENGTH];
-
-  int temp = 0;
-
   while (1)
     {
       // Print the cursor and get the next command entered
@@ -123,14 +124,16 @@ shell (FILE *input)
           posix_spawn_file_actions_t action;
           if (posix_spawn_file_actions_init (&action) != 0)
             {
-              return EXIT_FAILURE;
+              temp = EXIT_FAILURE;
+              return;
             }
           int fd[2];
           if (pipe (fd) == -1)
             {
               close (fd[0]);
               close (fd[1]);
-              return EXIT_FAILURE;
+              temp = EXIT_FAILURE;
+              return;
             }
           posix_spawn_file_actions_addclose (&action, fd[0]);
           posix_spawn_file_actions_adddup2 (&action, fd[1], STDOUT_FILENO);
@@ -158,6 +161,7 @@ shell (FILE *input)
           close (fd[0]);
           int exit_code;
           waitpid (pid, &exit_code, 0);
+          temp = exit_code;
           posix_spawn_file_actions_destroy (&action);
         }
     }
