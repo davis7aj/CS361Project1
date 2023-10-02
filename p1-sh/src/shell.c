@@ -11,7 +11,7 @@
 #include "process.h"
 
 //default is 1/ fail for testing purposes
-  int temp = 1;
+extern int temp = 1;
 
 
 // No command line can be more than 100 characters
@@ -92,9 +92,6 @@ shell (FILE *input)
       // We want "ls" from "./bin/ls xxx"
       if (strncmp (buffer, "./bin/", 6) == 0)
         {
-          char command[256] = "";
-          char flag[256] = "";
-          char dir[256] = "";
           char cmd_cp[256];
           strcpy (cmd_cp, buffer);
 
@@ -158,6 +155,10 @@ shell (FILE *input)
           int exit_code;
           waitpid (pid, &exit_code, 0);
           temp = exit_code;
+          if (temp > 1)
+          {
+            temp = 1;
+          }
           posix_spawn_file_actions_destroy (&action);
         }
     }
