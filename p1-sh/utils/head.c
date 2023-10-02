@@ -12,14 +12,14 @@ main (int argc, char *argv[])
   FILE *head = fopen(argv[argc - 1], "r");
   char chunk[2048];
 
+  if (head == NULL)
+  {
+    return 1;
+  }
+
   if (argc == 4 && strcmp(argv[1], "-n") != 0)
   {
     return EXIT_FAILURE;
-  }
-
-  if (argc == 3)
-  {
-
   }
 
   if (strcmp(argv[1], "-n") == 0)
