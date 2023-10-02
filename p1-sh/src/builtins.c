@@ -8,7 +8,6 @@
 
 #include <stdlib.h>
 
-
 extern int temp;
 
 // Given a message as input, print it to the screen followed by a
@@ -34,18 +33,17 @@ echo (char *message)
   char envmsg[strlen (message)];
   strncpy (envmsg, message, strlen (message));
 
-   char *envchk = strchr (envmsg, '?');
- 
-  char *env = getenv ("$?");
+  char *envchk = strchr (envmsg, '?');
 
-// printf("%s\n", envchk);
+  // char *env = getenv ("$?");
+
+  // printf("%s\n", envchk);
 
   if (envchk != NULL)
-  {
-      printf("%d\n", temp);
+    {
+      printf ("%d\n", temp);
       return 0;
-
-  }
+    }
 
   char *temp = strchr (msg, '{');
 

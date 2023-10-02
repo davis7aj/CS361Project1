@@ -1,3 +1,5 @@
+#define _POSIX_SOURCE
+
 #include <errno.h>
 #include <spawn.h>
 #include <stdio.h>
@@ -10,9 +12,8 @@
 #include "hash.h"
 #include "process.h"
 
-//default is 1/ fail for testing purposes
-extern int temp = 1;
-
+// default is 1/ fail for testing purposes
+int temp = 1;
 
 // No command line can be more than 100 characters
 #define MAXLENGTH 100
@@ -138,8 +139,6 @@ shell (FILE *input)
 
           if (posix_spawn (&pid, argv[0], &action, NULL, argv, NULL) == 0)
             {
-              int exit_code;
-              // waitpid(pid, &exit_code, 0);
               close (fd[1]);
 
               char buf[2048];
@@ -156,9 +155,9 @@ shell (FILE *input)
           waitpid (pid, &exit_code, 0);
           temp = exit_code;
           if (temp > 1)
-          {
-            temp = 1;
-          }
+            {
+              temp = 1;
+            }
           posix_spawn_file_actions_destroy (&action);
         }
     }

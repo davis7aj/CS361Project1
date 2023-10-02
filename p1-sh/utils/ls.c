@@ -1,6 +1,7 @@
+#include <dirent.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <dirent.h>
+#include <string.h>
 #include <sys/stat.h>
 
 static void usage (void);
@@ -10,59 +11,57 @@ main (int argc, char *argv[])
 {
   DIR *d;
   struct dirent *dir;
-  d = opendir(argv[argc - 1]);
+  d = opendir (argv[argc - 1]);
   if (d == NULL)
-  {
-    return 1;
-  }
+    {
+      return 1;
+    }
   int a = 0;
   int s = 0;
   for (int i = 0; i < argc; i++)
-  {
-    if (strcmp(argv[i], "-a") == 0)
     {
-      a = 1;
+      if (strcmp (argv[i], "-a") == 0)
+        {
+          a = 1;
+        }
+      if (strcmp (argv[i], "-s") == 0)
+        {
+          s = 1;
+        }
+      if (strcmp (argv[i], "-sa") == 0)
+        {
+          s = 1;
+          a = 1;
+        }
+      if (strcmp (argv[i], "-as") == 0)
+        {
+          s = 1;
+          a = 1;
+        }
     }
-    if (strcmp(argv[i], "-s") == 0)
-    {
-      s = 1;
-    }
-    if (strcmp(argv[i], "-sa") == 0)
-    {
-      s = 1;
-      a = 1;
-    }
-    if (strcmp(argv[i], "-as") == 0)
-    {
-      s = 1;
-      a = 1;
-    }
-  }
-  // printf("DEBUG a=%d, s=%d\n", a, s);
   if (d != NULL)
-  {
-    while ((dir = readdir(d)) != NULL)
-    { 
-      // printf("DEBUG dir name=%s\n", dir->d_name);
-      if (dir->d_name[0] == '.' && !a)
-      {
-        continue;
-      }
-      if (s)
-      {
-        char full_path[2048];
-        sprintf(full_path, "%s/%s", argv[argc - 1], dir->d_name);
-        struct stat st;
-        stat(full_path, &st);
-        printf("%d %s\n", st.st_size, dir->d_name);
-      }
-      else
-      {
-        printf("%s\n", dir->d_name);
-      }
+    {
+      while ((dir = readdir (d)) != NULL)
+        {
+          if (dir->d_name[0] == '.' && !a)
+            {
+              continue;
+            }
+          if (s)
+            {
+              char full_path[2048];
+              sprintf (full_path, "%s/%s", argv[argc - 1], dir->d_name);
+              struct stat st;
+              stat (full_path, &st);
+              printf ("%ld %s\n", st.st_size, dir->d_name);
+            }
+          else
+            {
+              printf ("%s\n", dir->d_name);
+            }
+        }
+      closedir (d);
     }
-    closedir(d);
-  }
   return EXIT_SUCCESS;
 }
 
