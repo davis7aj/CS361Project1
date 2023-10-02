@@ -138,6 +138,7 @@ shell (FILE *input)
 
           if (posix_spawn (&pid, argv[0], &action, NULL, argv, NULL) == 0)
             {
+              temp = 0;
               int exit_code;
               // waitpid(pid, &exit_code, 0);
               close (fd[1]);
@@ -152,7 +153,7 @@ shell (FILE *input)
             }
           else
             {
-              printf ("oopsie errno=%d\n", errno);
+              temp = 1;
             }
 
           close (fd[0]);
