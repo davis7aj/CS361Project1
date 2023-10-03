@@ -88,20 +88,20 @@ int export(char *kvpair)
     {
       return 1;
     }
-  char *kvcopy = kvpair;
+  char *kvcopy = strdup(kvpair);
   char *key = strtok (kvcopy, "=");
   char *value = strtok (NULL, "");
   if (value == NULL)
     {
+      free(kvcopy);
       return 1;
     }
   bool temp = hash_insert (key, value);
-
+  free(kvcopy);
   if (temp)
     {
       return 0;
     }
-
   return 1;
 }
 

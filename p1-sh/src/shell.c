@@ -14,6 +14,8 @@
 
 // default is 1/ fail for testing purposes
 int temp = 1;
+// char * const envp[1024];
+
 
 // No command line can be more than 100 characters
 #define MAXLENGTH 100
@@ -112,10 +114,22 @@ shell (FILE *input)
           int i = 0;
           while (token != NULL)
             {
+              // if (strcmp(token, "|") == 0)
+              // {
+                
+              //   break;
+              // }
               argv[i] = token;
               i++;
               token = strtok (NULL, " ");
             }
+          // if (token != NULL)
+          // {
+          //   // found pipe char
+          //   // TODO process pipe
+
+          // }
+          
           argv[i] = NULL;
 
           pid_t pid;
