@@ -72,6 +72,11 @@ main (int argc, char *argv[], char *envp[])
       printf("%s\n", envp[i]);
     }
   }
+
+    if (argc < 1)
+  {
+    usage();
+  }
   return EXIT_SUCCESS;
 }
 
