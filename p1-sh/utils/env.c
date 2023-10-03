@@ -7,6 +7,9 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+#include <sys/wait.h>
+
+
 static void usage (void);
 
 int
@@ -76,6 +79,7 @@ main (int argc, char *argv[], char *envp[])
     if (argc < 1)
   {
     usage();
+    return 1;
   }
   return EXIT_SUCCESS;
 }

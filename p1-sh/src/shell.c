@@ -12,6 +12,8 @@
 #include "hash.h"
 #include "process.h"
 
+#include <sys/wait.h>
+
 // default is 1/ fail for testing purposes
 int temp = 1;
 // char * const envp[1024];

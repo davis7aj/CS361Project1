@@ -6,6 +6,11 @@ static void usage (void);
 int
 main (int argc, char *argv[])
 {
+      if (argc < 1)
+  {
+    usage();
+    return 1;
+  }
   FILE *cat = fopen (argv[argc - 1], "r");
   char chunk[2048];
 
